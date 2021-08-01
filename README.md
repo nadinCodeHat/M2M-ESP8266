@@ -12,6 +12,6 @@ Machine to Machine(M2M) Communication is an essential component in many Industri
 
 ## Hardware Used
 
-- NodeMCU ESP-12E ESP8266 CP2102
+- 2 x NodeMCU ESP-12E ESP8266 CP2102
 - DHT11 (Temperature and Humidity Sensor)
 - 3V DC Relay 5 Pin
