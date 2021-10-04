@@ -15,3 +15,11 @@ Machine to Machine(M2M) Communication is an essential component in many Industri
 - 2 x NodeMCU ESP-12E ESP8266 CP2102
 - DHT11 (Temperature and Humidity Sensor)
 - 3V DC Relay 5 Pin
+
+## Software and Tools Used
+
+-  [Arduino IDE](https://www.arduino.cc/en/donate/)
+-  [ESP8266 CP2102 Driver](https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers)
+-  DHT.h (Open your Arduino IDE and go to Sketch > Include Library > Manage Libraries > Search for DHT and install the DHT sensor library from Adafruit).
+-  Adafruit Sensor Library (go to Sketch > Include Library > Manage Libraries > Search for Adafruit Unified Sensor and install it).
+-  ESP8266 (In your Arduino IDE, go to File> Preferences, Enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into the "Additional Boards Manager URLs" and click "OK", then Open the Boards Manager. Go to Tools > Board > Boards Manager and Search for ESP8266 and press install button for the "ESP8266 by ESP8266 Community".
