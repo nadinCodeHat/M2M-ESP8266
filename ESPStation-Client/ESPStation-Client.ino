@@ -10,10 +10,12 @@ const char *password = "espsoftap";
 DHT dht(dht_dpin, DHTTYPE); 
 
 void checkTemperature(float temp){
-  if(temp > 33)
+  if(temp > 32.50)
     Serial.println("High Temperature: "+String(temp)+" C ");
+    //Turn On the LED
   else
     Serial.println("Low Temperature: "+String(temp)+" C ");
+    //Turn off the LED
 }
 
 void setup() {
