@@ -8,29 +8,26 @@ ESP8266WebServer server(80);
 
 void handleSentVar() {
   Serial.println("handleSentVar function called...");
-  if (server.hasArg("sensor_reading")) { // this is the variable sent from the client
-    Serial.println("Sensor reading received...");
+  if (server.hasArg("relay_state")) { // this is the variable sent from the client
+    Serial.println("Change State received...");
  
-    float temperatureReading = server.arg("sensor_reading").toFloat();
+    String relayState = server.arg("relay_state");
  
-    Serial.print("Reading: ");
-    Serial.println(temperatureReading);
-    checkTemperature(temperatureReading);
+    Serial.print("Relay State: ");
+    Serial.println(relayState);
+    
+    operateRelay(relayState); //Change actuator state
+    
     Serial.println();
     server.send(200, "text/html", "Data received");
   }
 }
 
-void checkTemperature(float temp){
-  if(temp > 29.60){
-    Serial.println("High Temperature: "+String(temp)+" C ");
-    //Turn On the LED
-    digitalWrite(14, LOW);
-  }   
-  else{
-    Serial.println("Low Temperature: "+String(temp)+" C ");
-    //Turn off the LED
-    digitalWrite(14, HIGH);
+void operateRelay(String state){
+  if(state.equals("ON")){
+    digitalWrite(14, LOW); //Turn ON actuator
+  }else{
+    digitalWrite(14, HIGH); //Turn OFF acutator
   }
 }
 
@@ -49,12 +46,11 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  //Relay pin setup
-  pinMode(14, OUTPUT);
+  pinMode(14, OUTPUT); //Relay pin setup
 }
 
 void loop() {
   Serial.printf("Stations connected = %d\n", WiFi.softAPgetStationNum());
-  delay(1000);
+  delay(500);
   server.handleClient();
 }

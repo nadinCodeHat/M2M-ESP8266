@@ -36,10 +36,8 @@ void setup() {
   Serial.println("Temperature\n\n");
 }
 
-void loop() {
-  //Read temperature value
-  float temperature = dht.readTemperature();
 
+void requestServer(String state){
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
   const char * host = "192.168.4.1";
@@ -52,8 +50,8 @@ void loop() {
 
   // We now create a URI for the request
   String url = "/data/";
-  url += "?sensor_reading=";
-  url += temperature;
+  url += "?relay_state=";
+  url += state;
  
   Serial.print("Requesting URL: ");
   Serial.println(url);
@@ -76,6 +74,24 @@ void loop() {
   Serial.println();
   Serial.println();
   Serial.println();
- 
+}
+
+void checkTemperature(float temp){
+  if(temp > 29.60){
+    Serial.println("High Temperature: "+String(temp)+" C ");
+    //Turn On the LED
+    requestServer("ON");
+  }   
+  else{
+    Serial.println("Low Temperature: "+String(temp)+" C ");
+    //Turn off the LED
+    digitalWrite(14, HIGH);
+    requestServer("OFF");
+  }
+}
+
+void loop() {
+  checkTem1perature(dht.readTemperature()); //Read and check temperature value
+  
   delay(500);
 }
