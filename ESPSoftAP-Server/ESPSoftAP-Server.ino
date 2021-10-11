@@ -8,16 +8,18 @@ ESP8266WebServer server(80);
 
 void handleSentVar() {
   Serial.println("handleSentVar function called...");
-  if (server.hasArg("relay_state")) { // this is the variable sent from the client
+  if (server.hasArg("relay_state") || server.hasArg("rssi_value") ){ // this is the variable sent from the client
     Serial.println("Change State received...");
  
     String relayState = server.arg("relay_state");
- 
+    String rssival = server.arg("rssi_value");
+    
     Serial.print("Relay State: ");
     Serial.println(relayState);
-    
+    Serial.print("RSSI Value: ");
+    Serial.println(rssival);
     operateRelay(relayState); //Change actuator state
-    
+      
     Serial.println();
     server.send(200, "text/html", "Data received");
   }

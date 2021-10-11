@@ -37,7 +37,7 @@ void setup() {
 }
 
 
-void requestServer(String state){
+void requestServer(String state, long rssi){
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
   const char * host = "192.168.4.1";
@@ -52,7 +52,9 @@ void requestServer(String state){
   String url = "/data/";
   url += "?relay_state=";
   url += state;
- 
+  url += "/?rssi_value=";
+  url += rssi;
+  
   Serial.print("Requesting URL: ");
   Serial.println(url);
  
@@ -60,6 +62,7 @@ void requestServer(String state){
   client.print(String("GET ") + url + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "Connection: close\r\n\r\n");
+               
   unsigned long timeout = millis();
   while (client.available() == 0) {
     if (millis() - timeout > 5000) {
@@ -76,22 +79,27 @@ void requestServer(String state){
   Serial.println();
 }
 
-void checkTemperature(float temp){
+void checkTemperature(float temp, long rssi){
   if(temp > 29.60){
     Serial.println("High Temperature: "+String(temp)+" C ");
     //Turn On the LED
-    requestServer("ON");
+    requestServer("ON", rssi);
   }   
   else{
     Serial.println("Low Temperature: "+String(temp)+" C ");
     //Turn off the LED
     digitalWrite(14, HIGH);
-    requestServer("OFF");
+    requestServer("OFF", rssi);
   }
 }
 
 void loop() {
-  checkTem1perature(dht.readTemperature()); //Read and check temperature value
+  checkTemperature(dht.readTemperature(), WiFi.RSSI()); //Read and check temperature value
+  
+  // print the received signal strength:
+  long rssi = WiFi.RSSI();
+  Serial.print("RSSI:");
+  Serial.println(rssi);
   
   delay(500);
 }
