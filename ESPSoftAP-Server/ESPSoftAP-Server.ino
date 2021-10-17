@@ -8,16 +8,13 @@ ESP8266WebServer server(80);
 
 void handleSentVar() {
   Serial.println("handleSentVar function called...");
-  if (server.hasArg("relay_state") || server.hasArg("rssi_value") ){ // this is the variable sent from the client
+  if (server.hasArg("relay_state")){ // this is the variable sent from the client
     Serial.println("Change State received...");
  
     String relayState = server.arg("relay_state");
-    String rssival = server.arg("rssi_value");
     
     Serial.print("Relay State: ");
     Serial.println(relayState);
-    Serial.print("RSSI Value: ");
-    Serial.println(rssival);
     operateRelay(relayState); //Change actuator state
       
     Serial.println();
@@ -37,6 +34,7 @@ void setup() {
   //Soft AP Setup
   Serial.begin(115200);
   Serial.println();
+  
   Serial.print("Configuring Soft Access Point...");
   WiFi.mode(WIFI_AP);
   Serial.println(WiFi.softAP(ssid, password) ? "Ready" : "Failed!");
