@@ -5,14 +5,14 @@ const char *ssid = "ESPSoftAP";
 const char *password = "espsoftap";
 
 #define DHTTYPE DHT11
-#define dht_dpin 14
+#define dht_dpin 14 //D5 pin
 
 DHT dht(dht_dpin, DHTTYPE); 
 
 void setup() {
   Serial.begin(115200);
   delay(10);
-
+  
   //Connect to the Soft-Access Point
   Serial.println();
   Serial.print("Connecting to ");
@@ -34,10 +34,16 @@ void setup() {
   //DHT 11 Setup
   dht.begin();
   Serial.println("Temperature\n\n");
+
+ 
+  //Serial.setTimeout(2000);
+  
+  //Serial.println("I'm awake, but I'm going into deep sleep mode for 30 seconds");
+  //ESP.deepSleep(15e6);
 }
 
 
-void requestServer(String state, long rssi){
+void requestServer(String state){
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
   const char * host = "192.168.4.1";
@@ -52,8 +58,6 @@ void requestServer(String state, long rssi){
   String url = "/data/";
   url += "?relay_state=";
   url += state;
-  url += "/?rssi_value=";
-  url += rssi;
   
   Serial.print("Requesting URL: ");
   Serial.println(url);
@@ -79,27 +83,21 @@ void requestServer(String state, long rssi){
   Serial.println();
 }
 
-void checkTemperature(float temp, long rssi){
-  if(temp > 29.60){
+void checkTemperature(float temp){
+  if(temp > 34.00){
     Serial.println("High Temperature: "+String(temp)+" C ");
     //Turn On the LED
-    requestServer("ON", rssi);
+    requestServer("ON");
   }   
   else{
     Serial.println("Low Temperature: "+String(temp)+" C ");
     //Turn off the LED
-    digitalWrite(14, HIGH);
-    requestServer("OFF", rssi);
+    requestServer("OFF");
   }
 }
 
 void loop() {
-  checkTemperature(dht.readTemperature(), WiFi.RSSI()); //Read and check temperature value
-  
-  // print the received signal strength:
-  long rssi = WiFi.RSSI();
-  Serial.print("RSSI:");
-  Serial.println(rssi);
-  
+  //check Temperature
+  checkTemperature(dht.readTemperature()); //Read and check temperature value
   delay(500);
 }
