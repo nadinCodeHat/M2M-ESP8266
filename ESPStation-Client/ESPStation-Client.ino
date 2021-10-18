@@ -5,7 +5,7 @@ const char *ssid = "ESPSoftAP";
 const char *password = "espsoftap";
 
 #define DHTTYPE DHT11
-#define dht_dpin 14 //D5 pin
+#define dht_dpin 14 // D5 pin
 
 DHT dht(dht_dpin, DHTTYPE); 
 
@@ -13,11 +13,11 @@ void setup() {
   Serial.begin(115200);
   delay(10);
   
-  //Connect to the Soft-Access Point
+  // Connect to the Soft-Access Point
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
-  //Set to Station Mode
+  // Set to Station Mode
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
@@ -31,15 +31,17 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  //DHT 11 Setup
+  // DHT 11 Setup
   dht.begin();
   Serial.println("Temperature\n\n");
 
- 
-  //Serial.setTimeout(2000);
+  // Check Temperature
+  checkTemperature(dht.readTemperature()); // Read and check temperature value
+  delay(500);
+  Serial.setTimeout(2000);
   
-  //Serial.println("I'm awake, but I'm going into deep sleep mode for 30 seconds");
-  //ESP.deepSleep(15e6);
+  Serial.println("Deep sleep for 15 seconds");
+  ESP.deepSleep(15e6);
 }
 
 
@@ -84,20 +86,17 @@ void requestServer(String state){
 }
 
 void checkTemperature(float temp){
-  if(temp > 34.00){
+  if(temp > 33.00){
     Serial.println("High Temperature: "+String(temp)+" C ");
-    //Turn On the LED
+    // Turn on the actuator
     requestServer("ON");
   }   
   else{
     Serial.println("Low Temperature: "+String(temp)+" C ");
-    //Turn off the LED
+    // Turn off the actuator
     requestServer("OFF");
   }
 }
 
 void loop() {
-  //check Temperature
-  checkTemperature(dht.readTemperature()); //Read and check temperature value
-  delay(500);
 }

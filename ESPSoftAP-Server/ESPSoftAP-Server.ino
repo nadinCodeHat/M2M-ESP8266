@@ -8,14 +8,14 @@ ESP8266WebServer server(80);
 
 void handleSentVar() {
   Serial.println("handleSentVar function called...");
-  if (server.hasArg("relay_state")){ // this is the variable sent from the client
+  if (server.hasArg("relay_state")){ // This is the variable sent from the client
     Serial.println("Change State received...");
  
     String relayState = server.arg("relay_state");
     
     Serial.print("Relay State: ");
     Serial.println(relayState);
-    operateRelay(relayState); //Change actuator state
+    operateRelay(relayState); // Change actuator state
       
     Serial.println();
     server.send(200, "text/html", "Data received");
@@ -24,14 +24,14 @@ void handleSentVar() {
 
 void operateRelay(String state){
   if(state.equals("ON")){
-    digitalWrite(14, LOW); //Turn ON actuator
+    digitalWrite(14, LOW); // Turn ON actuator
   }else{
-    digitalWrite(14, HIGH); //Turn OFF acutator
+    digitalWrite(14, HIGH); // Turn OFF acutator
   }
 }
 
 void setup() {
-  //Soft AP Setup
+  // Soft AP Setup
   Serial.begin(115200);
   Serial.println();
   
@@ -46,7 +46,7 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  pinMode(14, OUTPUT); //Relay pin setup
+  pinMode(14, OUTPUT); // Relay pin setup
 }
 
 void loop() {
