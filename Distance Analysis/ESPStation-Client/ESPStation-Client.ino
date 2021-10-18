@@ -7,11 +7,11 @@ void setup() {
   Serial.begin(115200);
   delay(10);
 
-  //Connect to the Soft-Access Point
+  // Connect to the Soft-Access Point
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
-  //Set to Station Mode
+  // Set to Station Mode
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 

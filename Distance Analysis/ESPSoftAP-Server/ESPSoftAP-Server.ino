@@ -8,7 +8,7 @@ ESP8266WebServer server(80);
 
 void handleSentVar() {
   Serial.println("handleSentVar function called...");
-  if (server.hasArg("rssi_value") ) { // this is the variable sent from the client
+  if (server.hasArg("rssi_value") ) { // This is the variable sent from the client
     Serial.println("RSSI value received...");
 
     String rssival = server.arg("rssi_value");
@@ -22,7 +22,7 @@ void handleSentVar() {
 }
 
 void setup() {
-  //Soft AP Setup
+  // Soft AP Setup
   Serial.begin(115200);
   Serial.println();
   Serial.print("Configuring Soft Access Point...");
